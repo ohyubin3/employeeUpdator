@@ -10,8 +10,7 @@ async function initialize() {
   connection = await mysql.createConnection({
     host: "localhost",
     user: "root",
-    password: "rootroot",
-    database: "",
+    database: "employeeUpdate_db",
   });
 }
 
