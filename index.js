@@ -62,4 +62,7 @@ async function main() {
     ]);
     console.table(rows);
   }
+  if (responseObject.wantTodo === "QUIT") {
+    end();
+  }
 }
