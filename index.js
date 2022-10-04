@@ -53,15 +53,7 @@ async function main() {
       responseObject.wantTodo,
     ]);
     console.table(rows);
-    console.log(
-      "                                                                        "
-    );
-    console.log(
-      "─────────────────────────────Data Appended──────────────────────────────"
-    );
-    console.log(
-      "                                                                        "
-    );
+    appendBar();
     end();
   }
   if (responseObject.wantTodo === "2. View All the Departments") {
@@ -69,15 +61,7 @@ async function main() {
       responseObject.wantTodo,
     ]);
     console.table(rows);
-    console.log(
-      "                                                                        "
-    );
-    console.log(
-      "─────────────────────────────Data Appended──────────────────────────────"
-    );
-    console.log(
-      "                                                                        "
-    );
+    appendBar();
     end();
   }
   if (responseObject.wantTodo === "3. View All the Roles") {
@@ -85,15 +69,7 @@ async function main() {
       responseObject.wantTodo,
     ]);
     console.table(rows);
-    console.log(
-      "                                                                        "
-    );
-    console.log(
-      "─────────────────────────────Data Appended──────────────────────────────"
-    );
-    console.log(
-      "                                                                        "
-    );
+    appendBar();
     end();
   }
   if (responseObject.wantTodo === "8. QUIT") {
@@ -101,6 +77,19 @@ async function main() {
   }
 }
 
+// Simple bar showing where the data appended
+function appendBar() {
+  console.log(
+    `
+
+↑                                                                        ↑
+└─────────────────────────────Data Appended──────────────────────────────┘
+
+`
+  );
+}
+
+// Asks if the user want to quit
 function end() {
   inquirer
     .prompt([
