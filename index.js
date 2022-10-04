@@ -34,48 +34,96 @@ async function main() {
       name: "wantTodo",
       message: "What would you like to do?",
       choices: [
-        "View All the Employees",
-        "View All the Departments",
-        "View All the Roles",
-        "Add an Employee",
-        "Add a Department",
-        "Add a Role",
-        "Update an Employee Role",
-        "QUIT",
+        "1. View All the Employees",
+        "2. View All the Departments",
+        "3. View All the Roles",
+        "4. Add an Employee",
+        "5. Add a Department",
+        "6. Add a Role",
+        "7. Update an Employee Role",
+        "8. QUIT",
       ],
     },
   ]);
 
   console.log(`▶▶   You have selected to ${responseObject.wantTodo}   ◀◀`);
   // query database "ALL EMPLOYEES"
-  if (responseObject.wantTodo === "View All the Employees") {
+  if (responseObject.wantTodo === "1. View All the Employees") {
     const [rows] = await connection.execute(`SELECT * FROM employees`, [
       responseObject.wantTodo,
     ]);
     console.table(rows);
-    main();
+    console.log(
+      "                                                                        "
+    );
+    console.log(
+      "─────────────────────────────Data Appended──────────────────────────────"
+    );
+    console.log(
+      "                                                                        "
+    );
+    end();
   }
-  if (responseObject.wantTodo === "View All the Departments") {
+  if (responseObject.wantTodo === "2. View All the Departments") {
     const [rows] = await connection.execute(`SELECT * FROM departments`, [
       responseObject.wantTodo,
     ]);
     console.table(rows);
-    main();
+    console.log(
+      "                                                                        "
+    );
+    console.log(
+      "─────────────────────────────Data Appended──────────────────────────────"
+    );
+    console.log(
+      "                                                                        "
+    );
+    end();
   }
-  if (responseObject.wantTodo === "View All the Roles") {
+  if (responseObject.wantTodo === "3. View All the Roles") {
     const [rows] = await connection.execute(`SELECT * FROM roles`, [
       responseObject.wantTodo,
     ]);
     console.table(rows);
-    main();
+    console.log(
+      "                                                                        "
+    );
+    console.log(
+      "─────────────────────────────Data Appended──────────────────────────────"
+    );
+    console.log(
+      "                                                                        "
+    );
+    end();
   }
-  if (responseObject.wantTodo === "QUIT") {
-    console.log(`
+  if (responseObject.wantTodo === "8. QUIT") {
+    end();
+  }
+}
+
+function end() {
+  inquirer
+    .prompt([
+      {
+        type: "list",
+        name: "end",
+        message:
+          "Would you like to quit? (Select No to go back to the Main Menu)",
+        choices: ["Yes", "No"],
+      },
+    ])
+    .then((endResponse) => {
+      if (endResponse.end === "Yes") {
+        console.log(`
 
     ┌                                                                ┐
             Press "ctrl + c"  or  "cmd + c" in order to quit.
     └                                                                ┘
 
     `);
-  }
+      }
+      if (endResponse.end === "No") {
+        main();
+      }
+    });
 }
