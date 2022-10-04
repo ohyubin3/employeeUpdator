@@ -46,7 +46,7 @@ async function main() {
     },
   ]);
 
-  console.log(`▶▶   You have selected to ${responseObject.wantTodo}   ◀◀`);
+  console.log(`You have selected   ▶▶   "${responseObject.wantTodo}"   ◀◀`);
   // query database "ALL EMPLOYEES"
   if (responseObject.wantTodo === "1. View All the Employees") {
     const [rows] = await connection.execute(`SELECT * FROM employees`, [
@@ -123,6 +123,13 @@ function end() {
     `);
       }
       if (endResponse.end === "No") {
+        console.log(
+          `
+
+
+
+                                                                                  `
+        );
         main();
       }
     });
