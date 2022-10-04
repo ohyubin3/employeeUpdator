@@ -10,7 +10,7 @@ async function initialize() {
   connection = await mysql.createConnection({
     host: "localhost",
     user: "root",
-    database: "employeeUpdate_db",
+    database: "employeeupdate_db",
   });
 }
 
@@ -23,21 +23,21 @@ async function main() {
       name: "first_name",
       message: "What's your first name",
     },
-    {
-      type: "input",
-      name: "last_name",
-      message: "What's your last name",
-      default() {
-        return "Doe";
-      },
-    },
+    // {
+    //   type: "input",
+    //   name: "last_name",
+    //   message: "What's your last name",
+    //   default() {
+    //     return "Doe";
+    //   },
+    // },
   ]);
 
   console.log(responseObject);
 
   // query database
   const [rows] = await connection.execute(
-    `SELECT * FROM employees where firstname = ?`,
+    `SELECT * FROM employees where first_name = ?`,
     [responseObject.first_name]
   );
   console.table(rows);
