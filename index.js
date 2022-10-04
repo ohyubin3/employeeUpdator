@@ -56,6 +56,7 @@ async function main() {
     appendBar();
     end();
   }
+  // query database "All Departments"
   if (responseObject.wantTodo === "2. View All the Departments") {
     const [rows] = await connection.execute(`SELECT * FROM departments`, [
       responseObject.wantTodo,
@@ -64,6 +65,7 @@ async function main() {
     appendBar();
     end();
   }
+  // query database "Roles"
   if (responseObject.wantTodo === "3. View All the Roles") {
     const [rows] = await connection.execute(`SELECT * FROM roles`, [
       responseObject.wantTodo,
@@ -72,9 +74,43 @@ async function main() {
     appendBar();
     end();
   }
-  if (responseObject.wantTodo === "8. QUIT") {
-    end();
+  // query database to "add employee"
+  if (responseObject.wantTodo === "4. Add an Employee") {
+    // I will work on this part later
   }
+  // query database to "add department"
+  if (responseObject.wantTodo === "5. Add a Department") {
+    addDepart();
+  }
+  // query database to "add role"
+  if (responseObject.wantTodo === "6. Add a Role") {
+  }
+  // query database to "update employee role"
+  if (responseObject.wantTodo === "7. Update an Employee Role") {
+  }
+  //  Quit the application
+  if (responseObject.wantTodo === "8. QUIT") {
+    process.exit();
+  }
+}
+
+// Selected Menu Functions
+async function addDepart() {
+  const addDepartName = await inquirer.prompt([
+    {
+      type: "input",
+      name: "newDepart",
+      message: "Please enter the name of the new department.",
+    },
+  ]);
+  console.log(addDepartName);
+  const [rows] = await connection.execute(
+    `INSERT INTO departments (departments_name)
+  VALUES (?)`,
+    [addDepartName.newDepart]
+  );
+  console.log(rows);
+  end();
 }
 
 // Simple bar showing where the data appended
@@ -103,13 +139,7 @@ function end() {
     ])
     .then((endResponse) => {
       if (endResponse.end === "Yes") {
-        console.log(`
-
-    ┌                                                                ┐
-            Press "ctrl + c"  or  "cmd + c" in order to quit.
-    └                                                                ┘
-
-    `);
+        process.exit();
       }
       if (endResponse.end === "No") {
         console.log(
