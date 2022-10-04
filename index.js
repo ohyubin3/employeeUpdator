@@ -20,7 +20,11 @@ async function main() {
   console.log(`
 ╔═══════════════════════════════════════════════════╗
 ║                                                   ║
-║                   Employee Manager                ║
+║                                                   ║
+║                                                   ║
+║                  Employee Manager                 ║
+║                                                   ║
+║                                                   ║
 ║                                                   ║
 ╚═══════════════════════════════════════════════════╝
     `);
@@ -49,20 +53,29 @@ async function main() {
       responseObject.wantTodo,
     ]);
     console.table(rows);
+    main();
   }
   if (responseObject.wantTodo === "View All the Departments") {
     const [rows] = await connection.execute(`SELECT * FROM departments`, [
       responseObject.wantTodo,
     ]);
     console.table(rows);
+    main();
   }
   if (responseObject.wantTodo === "View All the Roles") {
     const [rows] = await connection.execute(`SELECT * FROM roles`, [
       responseObject.wantTodo,
     ]);
     console.table(rows);
+    main();
   }
   if (responseObject.wantTodo === "QUIT") {
-    end();
+    console.log(`
+
+    ┌                                                                ┐
+            Press "ctrl + c"  or  "cmd + c" in order to quit.
+    └                                                                ┘
+
+    `);
   }
 }
