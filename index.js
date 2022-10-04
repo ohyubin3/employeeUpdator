@@ -15,30 +15,37 @@ async function initialize() {
 }
 
 async function main() {
+  console.log(`
+╔═══════════════════════════════════════════════════╗
+║                                                   ║
+║                   Employee Manager                ║
+║                                                   ║
+╚═══════════════════════════════════════════════════╝
+    `);
   // get the client
   // create the connection
   const responseObject = await inquirer.prompt([
     {
-      type: "input",
-      name: "first_name",
-      message: "What's your first name",
+      type: "list",
+      name: "main_menu",
+      message: "What would you like to do?",
+      choices: [
+        "View All Employees",
+        "View All Departments",
+        "View All Roles",
+        "Add an Employee",
+        "Add a Department",
+        "Add a Role",
+        "Update an Employee Role",
+        "QUIT",
+      ],
     },
-    // {
-    //   type: "input",
-    //   name: "last_name",
-    //   message: "What's your last name",
-    //   default() {
-    //     return "Doe";
-    //   },
-    // },
   ]);
 
-  console.log(responseObject);
-
-  // query database
-  const [rows] = await connection.execute(
-    `SELECT * FROM employees where first_name = ?`,
-    [responseObject.first_name]
-  );
-  console.table(rows);
+  //   console.log(responseObject);
+  //   // query database
+  //   const [rows] = await connection.execute(`SELECT * FROM employees`, [
+  //     responseObject,
+  //   ]);
+  //   console.table(rows);
 }
