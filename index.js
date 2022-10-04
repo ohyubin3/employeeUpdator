@@ -1,3 +1,4 @@
+// get the client
 const mysql = require("mysql2/promise");
 let inquirer = require("inquirer");
 
@@ -6,6 +7,7 @@ let connection;
 initialize();
 main();
 
+// create the connection
 async function initialize() {
   connection = await mysql.createConnection({
     host: "localhost",
@@ -14,6 +16,7 @@ async function initialize() {
   });
 }
 
+// Main menu to select the user needs
 async function main() {
   console.log(`
 ╔═══════════════════════════════════════════════════╗
@@ -22,12 +25,10 @@ async function main() {
 ║                                                   ║
 ╚═══════════════════════════════════════════════════╝
     `);
-  // get the client
-  // create the connection
   const responseObject = await inquirer.prompt([
     {
       type: "list",
-      name: "main_menu",
+      name: "wantTodo",
       message: "What would you like to do?",
       choices: [
         "View All Employees",
@@ -42,10 +43,13 @@ async function main() {
     },
   ]);
 
-  //   console.log(responseObject);
-  //   // query database
-  //   const [rows] = await connection.execute(`SELECT * FROM employees`, [
-  //     responseObject,
-  //   ]);
-  //   console.table(rows);
+  console.log(responseObject);
+  // query database
+  if (responseObject === "View All Employees") {
+    const [rows] = await connection.execute(
+      `SELECT * FROM employees`,
+      responseObject.wantTodo
+    );
+    console.table(rows);
+  }
 }
