@@ -1,7 +1,6 @@
 // get the client
 const mysql = require("mysql2/promise");
 let inquirer = require("inquirer");
-
 let connection;
 
 initialize();
@@ -43,13 +42,12 @@ async function main() {
     },
   ]);
 
-  console.log(responseObject);
-  // query database
-  if (responseObject === "View All Employees") {
-    const [rows] = await connection.execute(
-      `SELECT * FROM employees`,
-      responseObject.wantTodo
-    );
+  console.log(`▶▶   You have selected to ${responseObject.wantTodo}   ◀◀`);
+  // query database "ALL EMPLOYEES"
+  if (responseObject.wantTodo === "View All Employees") {
+    const [rows] = await connection.execute(`SELECT * FROM employees`, [
+      responseObject.wantTodo,
+    ]);
     console.table(rows);
   }
 }
