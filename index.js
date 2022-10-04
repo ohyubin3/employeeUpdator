@@ -30,9 +30,9 @@ async function main() {
       name: "wantTodo",
       message: "What would you like to do?",
       choices: [
-        "View All Employees",
-        "View All Departments",
-        "View All Roles",
+        "View All the Employees",
+        "View All the Departments",
+        "View All the Roles",
         "Add an Employee",
         "Add a Department",
         "Add a Role",
@@ -44,8 +44,20 @@ async function main() {
 
   console.log(`▶▶   You have selected to ${responseObject.wantTodo}   ◀◀`);
   // query database "ALL EMPLOYEES"
-  if (responseObject.wantTodo === "View All Employees") {
+  if (responseObject.wantTodo === "View All the Employees") {
     const [rows] = await connection.execute(`SELECT * FROM employees`, [
+      responseObject.wantTodo,
+    ]);
+    console.table(rows);
+  }
+  if (responseObject.wantTodo === "View All the Departments") {
+    const [rows] = await connection.execute(`SELECT * FROM departments`, [
+      responseObject.wantTodo,
+    ]);
+    console.table(rows);
+  }
+  if (responseObject.wantTodo === "View All the Roles") {
+    const [rows] = await connection.execute(`SELECT * FROM roles`, [
       responseObject.wantTodo,
     ]);
     console.table(rows);
