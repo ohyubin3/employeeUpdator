@@ -96,6 +96,8 @@ async function main() {
 }
 
 // Selected Menu Functions
+
+// Adds new department
 async function addDepart() {
   const addDepartName = await inquirer.prompt([
     {
@@ -114,6 +116,7 @@ async function addDepart() {
   end();
 }
 
+// Adds new role
 async function addRole() {
   const addRoles = await inquirer.prompt([
     {
@@ -136,7 +139,7 @@ async function addRole() {
   const [rows] = await connection.execute(
     `INSERT INTO roles (title)
   VALUES (?)`,
-    [addRoles.newRole],
+    [addRoles.newRoleName],
     `INSERT INTO roles (salary)
     VALUES (?)`,
     [addRoles.newRoleSalary],
