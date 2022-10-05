@@ -76,7 +76,7 @@ async function main() {
   }
   // query database to "add employee"
   if (responseObject.wantTodo === "4. Add an Employee") {
-    // I will work on this part later
+    addEmployee();
   }
   // query database to "add department"
   if (responseObject.wantTodo === "5. Add a Department") {
@@ -97,6 +97,41 @@ async function main() {
 
 // Selected Menu Functions
 
+// Adds new Employee
+async function addEmployee() {
+  const addRoles = await inquirer.prompt([
+    {
+      type: "input",
+      name: "newRoleName",
+      message: "Please enter the name of the new role.",
+    },
+    {
+      type: "input",
+      name: "newRoleSalary",
+      message: "Please enter the salary for this role.",
+    },
+    {
+      type: "input",
+      name: "newRoleDepId",
+      message: "Please assign the department ID for this role.",
+    },
+  ]);
+  console.log(addRoles);
+  const [rows] = await connection.execute(
+    `INSERT INTO roles (title)
+  VALUES (?)`,
+    [addRoles.newRoleName],
+    `INSERT INTO roles (salary)
+    VALUES (?)`,
+    [addRoles.newRoleSalary],
+    `INSERT INTO roles (department_id)
+    VALUES (?)`,
+    [addRoles.newRoleDepId]
+  );
+  // console.log(rows);
+  end();
+}
+
 // Adds new department
 async function addDepart() {
   const addDepartName = await inquirer.prompt([
@@ -106,13 +141,13 @@ async function addDepart() {
       message: "Please enter the name of the new department.",
     },
   ]);
-  console.log(addDepartName);
+  console.log(`${addDepartName} has been created.`);
   const [rows] = await connection.execute(
     `INSERT INTO departments (departments_name)
   VALUES (?)`,
     [addDepartName.newDepart]
   );
-  console.log(rows);
+  // console.log(rows);
   end();
 }
 
@@ -147,7 +182,7 @@ async function addRole() {
     VALUES (?)`,
     [addRoles.newRoleDepId]
   );
-  console.log(rows);
+  // console.log(rows);
   end();
 }
 
@@ -171,7 +206,7 @@ function end() {
         type: "list",
         name: "end",
         message:
-          "Would you like to quit? (Select No to go back to the Main Menu)",
+          "Would you like to quit? (Selecting 'No' will tkae you back to the Main Menu)",
         choices: ["Yes", "No"],
       },
     ])
