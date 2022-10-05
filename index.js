@@ -84,6 +84,7 @@ async function main() {
   }
   // query database to "add role"
   if (responseObject.wantTodo === "6. Add a Role") {
+    addRole();
   }
   // query database to "update employee role"
   if (responseObject.wantTodo === "7. Update an Employee Role") {
@@ -108,6 +109,40 @@ async function addDepart() {
     `INSERT INTO departments (departments_name)
   VALUES (?)`,
     [addDepartName.newDepart]
+  );
+  console.log(rows);
+  end();
+}
+
+async function addRole() {
+  const addRoles = await inquirer.prompt([
+    {
+      type: "input",
+      name: "newRoleName",
+      message: "Please enter the name of the new role.",
+    },
+    {
+      type: "input",
+      name: "newRoleSalary",
+      message: "Please enter the salary for this role.",
+    },
+    {
+      type: "input",
+      name: "newRoleDepId",
+      message: "Please assign the department ID for this role.",
+    },
+  ]);
+  console.log(addRoles);
+  const [rows] = await connection.execute(
+    `INSERT INTO roles (title)
+  VALUES (?)`,
+    [addRoles.newRole],
+    `INSERT INTO roles (salary)
+    VALUES (?)`,
+    [addRoles.newRoleSalary],
+    `INSERT INTO roles (department_id)
+    VALUES (?)`,
+    [addRoles.newRoleDepId]
   );
   console.log(rows);
   end();
