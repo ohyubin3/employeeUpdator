@@ -88,6 +88,7 @@ async function main() {
   }
   // query database to "update employee role"
   if (responseObject.wantTodo === "7. Update an Employee Role") {
+    updateEmp();
   }
   //  Quit the application
   if (responseObject.wantTodo === "8. QUIT") {
@@ -99,36 +100,55 @@ async function main() {
 
 // Adds new Employee
 async function addEmployee() {
-  const addRoles = await inquirer.prompt([
-    {
-      type: "input",
-      name: "newRoleName",
-      message: "Please enter the name of the new role.",
-    },
-    {
-      type: "input",
-      name: "newRoleSalary",
-      message: "Please enter the salary for this role.",
-    },
-    {
-      type: "input",
-      name: "newRoleDepId",
-      message: "Please assign the department ID for this role.",
-    },
-  ]);
-  console.log(addRoles);
-  const [rows] = await connection.execute(
-    `INSERT INTO roles (title)
-  VALUES (?)`,
-    [addRoles.newRoleName],
-    `INSERT INTO roles (salary)
-    VALUES (?)`,
-    [addRoles.newRoleSalary],
-    `INSERT INTO roles (department_id)
-    VALUES (?)`,
-    [addRoles.newRoleDepId]
-  );
-  // console.log(rows);
+  inquirer
+    .prompt([
+      {
+        type: "input",
+        name: "newFirstName",
+        message: "Please enter the first name of the new employee.",
+      },
+      {
+        type: "input",
+        name: "newLastName",
+        message: "Please enter the last name of the new employee.",
+      },
+      {
+        type: "input",
+        name: "empRole",
+        message: "Please enter the role_id for the new employee.",
+      },
+      {
+        type: "input",
+        name: "empManager",
+        message: "Please enter the manager_id for the new employee.",
+      },
+    ])
+    .then(function (val) {
+      connection.query("INSERT INTO employees SET ?", {
+        first_name: val.newFirstName,
+        last_name: val.newLastName,
+        role_id: val.empRole,
+        manager_id: val.empManager,
+      });
+      console.log("New employee has been added to the database.");
+      end();
+    });
+  console.log(addEmp);
+  // const [rows] = await connection.execute(
+  //   `INSERT INTO employees (first_name, last_name, role_id, manager_id)
+  //     VALUES (?,?,?,?)`,
+  //   [addEmp.newFirstName, addEmp.newLastName, addEmp.empRole, addEmp.empManager]
+  //   [addEmp.newFirstName]`INSERT INTO employees (last_name)
+  // VALUES (?)`,
+  //   [addEmp.newLastName],
+  //   `INSERT INTO employees (role_id)
+  //   VALUES (?)`,
+  //   [addEmp.empRole],
+  //   `INSERT INTO employees (manager_id)
+  //   VALUES (?)`,
+  //   [addEmp.empManager]
+  // );
+  console.log("New employee has been added to the database.");
   end();
 }
 
@@ -141,13 +161,13 @@ async function addDepart() {
       message: "Please enter the name of the new department.",
     },
   ]);
-  console.log(`${addDepartName} has been created.`);
+  // console.log(`"${addDepartName} has been created."`);
   const [rows] = await connection.execute(
     `INSERT INTO departments (departments_name)
   VALUES (?)`,
     [addDepartName.newDepart]
   );
-  // console.log(rows);
+  console.log("New department has been added to the database.");
   end();
 }
 
@@ -182,7 +202,52 @@ async function addRole() {
     VALUES (?)`,
     [addRoles.newRoleDepId]
   );
-  // console.log(rows);
+  console.log("New role has been added to the database.");
+  end();
+}
+
+// Update Employee function
+async function updateEmp() {
+  const showEmployees = await connection.execute(`SELECT * FROM employees`, [
+    responseObject.wantTodo,
+  ]);
+  const employeeData = `SELECT * FROM employees`;
+  const empUpdate = await inquirer.prompt([
+    // {
+    //   type: "input",
+    //   name: "findName",
+    //   message: "Please select",
+    // },
+    {
+      type: "list",
+      name: "showEmployees",
+      message: "Please select",
+      choices: employeeData,
+    },
+    {
+      type: "input",
+      name: "newRoleSalary",
+      message: "Please enter the salary for this role.",
+    },
+    {
+      type: "input",
+      name: "newRoleDepId",
+      message: "Please assign the department ID for this role.",
+    },
+  ]);
+  console.log(empUpdate);
+  const [rows] = await connection.execute(
+    `INSERT INTO roles (title)
+  VALUES (?)`,
+    [empUpdate.newRoleName],
+    `INSERT INTO roles (salary)
+    VALUES (?)`,
+    [empUpdate.newRoleSalary],
+    `INSERT INTO roles (department_id)
+    VALUES (?)`,
+    [empUpdate.newRoleDepId]
+  );
+  console.log("New role has been added to the database.");
   end();
 }
 
