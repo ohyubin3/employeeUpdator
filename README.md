@@ -4,7 +4,7 @@
 
 
 
-<h3 align="center">Employee Manager v. 1.0</h3>
+<h1 align="center">Employee Manager v. 1.0</h1>
 
 
 
@@ -20,8 +20,9 @@
 
 
 This is a "Employee Manager".
-It allows you to view and also add employees, roles, and departments as you like to name them.
-It also will allow to update the employees role as changes happen.
+It allows you to view and also add employees, roles, and departments as you like to name them. <br>
+It also will allow to update the employees role as changes happen. <br>
+You can run this app by typing "node index.js" in your terminal.
 
 
 Please refer to <a href="https://drive.google.com/file/d/1_r06NBvAz2pY5t-uCWThvgw6xYDb131d/view">this</a> video for the use.
