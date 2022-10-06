@@ -1,6 +1,7 @@
 // get the client
 const mysql = require("mysql2/promise");
 let inquirer = require("inquirer");
+// const Connection = require("mysql2/typings/mysql/lib/Connection");
 let connection;
 
 initialize();
@@ -96,7 +97,7 @@ async function main() {
   }
 }
 
-// Selected Menu Functions
+// Selected Menu Functions //
 
 // Adds new Employee
 async function addEmployee() {
@@ -138,16 +139,6 @@ async function addEmployee() {
   //   `INSERT INTO employees (first_name, last_name, role_id, manager_id)
   //     VALUES (?,?,?,?)`,
   //   [addEmp.newFirstName, addEmp.newLastName, addEmp.empRole, addEmp.empManager]
-  //   [addEmp.newFirstName]`INSERT INTO employees (last_name)
-  // VALUES (?)`,
-  //   [addEmp.newLastName],
-  //   `INSERT INTO employees (role_id)
-  //   VALUES (?)`,
-  //   [addEmp.empRole],
-  //   `INSERT INTO employees (manager_id)
-  //   VALUES (?)`,
-  //   [addEmp.empManager]
-  // );
   console.log("New employee has been added to the database.");
   end();
 }
@@ -208,46 +199,58 @@ async function addRole() {
 
 // Update Employee function
 async function updateEmp() {
-  const showEmployees = await connection.execute(`SELECT * FROM employees`, [
-    responseObject.wantTodo,
-  ]);
-  const employeeData = `SELECT * FROM employees`;
+  // View all the employees and roles for reference
+  // const [showEmpList] = await connection.execute(
+  //   `SELECT first_name, last_name, role_id FROM employees`
+  // );
+  // console.table(showEmpList);
+  // const [showRoleList] = await connection.execute(
+  //   `SELECT title, role_id FROM roles`
+  // );
+  // console.table(showRoleList);
+
+  // Variable to select columns from the table database
+  const [rawEmpData] = await connection.execute(
+    // `SELECT * FROM employees`
+    `SELECT *
+    FROM employees
+    LEFT JOIN roles  
+    ON employees.employee_id = roles.role_id`
+  );
+  console.table(rawEmpData);
   const empUpdate = await inquirer.prompt([
-    // {
-    //   type: "input",
-    //   name: "findName",
-    //   message: "Please select",
-    // },
     {
       type: "list",
-      name: "showEmployees",
-      message: "Please select",
-      choices: employeeData,
+      name: "empToUpdateRole",
+      message: "Which employee needs their role updated?",
+      choices: rawEmpData.map((employee) => ({
+        value: employee.employee_id,
+        name:
+          employee.employee_id +
+          ".  " +
+          employee.first_name +
+          "," +
+          " " +
+          employee.last_name +
+          "     /    Current role :  " +
+          employee.title,
+      })),
     },
     {
       type: "input",
-      name: "newRoleSalary",
-      message: "Please enter the salary for this role.",
-    },
-    {
-      type: "input",
-      name: "newRoleDepId",
-      message: "Please assign the department ID for this role.",
+      name: "assignNewRole",
+      message: "Please enter the new role_id to assign.",
     },
   ]);
   console.log(empUpdate);
   const [rows] = await connection.execute(
-    `INSERT INTO roles (title)
-  VALUES (?)`,
-    [empUpdate.newRoleName],
-    `INSERT INTO roles (salary)
-    VALUES (?)`,
-    [empUpdate.newRoleSalary],
-    `INSERT INTO roles (department_id)
-    VALUES (?)`,
-    [empUpdate.newRoleDepId]
+    `UPDATE employees
+    SET role_id = VALUE (?)
+    where VALUES (?)`,
+    [empUpdate.assignNewRole, empUpdate.empToUpdateRole]
   );
-  console.log("New role has been added to the database.");
+
+  console.log("New role has been assigned to the employee.");
   end();
 }
 
@@ -271,7 +274,7 @@ function end() {
         type: "list",
         name: "end",
         message:
-          "Would you like to quit? (Selecting 'No' will tkae you back to the Main Menu)",
+          "Would you like to quit? (Selecting 'No' will take you back to the Main Menu)",
         choices: ["Yes", "No"],
       },
     ])
